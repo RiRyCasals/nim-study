@@ -1,0 +1,1 @@
+echo "Hello, nim world!"
