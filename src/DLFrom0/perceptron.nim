@@ -1,5 +1,5 @@
 import lenientops  # int と float 間での演算を行えるようにする
-import std/sums
+import std/math
 
 
 # 2.3.1 単純なパーセプトロンの実装
@@ -32,7 +32,7 @@ proc perceptronAnd(x1, x2: int): int =
     x: array[2, float] = [float(x1), float(x2)]
     w: array[2, float] = [0.5, 0.5]
     b: float = -0.7
-  let y = sumKbn(vectorProduct(x, w)) + b
+  let y = sum(vectorProduct(x, w)) + b
   if y <= 0:
     return 0
   else:
@@ -43,7 +43,7 @@ proc perceptronNand(x1, x2: int): int =
     x: array[2, float] = [float(x1), float(x2)]
     w: array[2, float] = [-0.5, -0.5]
     b: float = 0.7
-  let y = sumKbn(vectorProduct(x, w)) + b
+  let y = sum(vectorProduct(x, w)) + b
   if y <= 0:
     return 0
   else:
@@ -54,7 +54,7 @@ proc perceptronOr(x1, x2: int): int =
     x: array[2, float] = [float(x1), float(x2)]
     w: array[2, float] = [0.5, 0.5]
     b: float = -0.2
-  let y = sumKbn(vectorProduct(x, w)) + b
+  let y = sum(vectorProduct(x, w)) + b
   if y <= 0:
     return 0
   else:
