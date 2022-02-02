@@ -21,7 +21,6 @@ proc perceptronAnd(x1, x2: int): int =
 proc vectorProduct[T](x, w: openArray[T]): seq[T] =
   if x.len != w.len:
     raise 
-  # var y: openArray[T]
   var y: seq[T] = @[]
   for i in 0..<w.len:
     y.add(x[i] * w[i])
