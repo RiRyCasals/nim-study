@@ -2,7 +2,7 @@ import lenientops
 import math
 
 # 3.2.1 Sigmoid関数の実装
-proc sigmoid*[T](x: openArray[T]): seq[float] =
+proc sigmoid[T](x: openArray[T]): seq[float] =
   var y: seq[float] = @[]
   for i in 0..<x.len:
     y.add(pow(1 + exp(float(-x[i])), -1))
@@ -19,7 +19,7 @@ proc step[T](x: openArray[T]): seq[float] =
   return y
 
 # 3.2.7 ReLU関数の実装
-proc relu*[T](x: openArray[T]): seq[float] =
+proc relu[T](x: openArray[T]): seq[float] =
   var y: seq[float] = @[]
   for i in 0..<x.len:
     y.add(max(0.0, float(x[i])))
