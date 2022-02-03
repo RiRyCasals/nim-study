@@ -18,20 +18,22 @@ proc perceptronAnd(x1, x2: int): int =
 
 
 # 2.3.3 配列による重みとバイアスの導入
-proc vectorProduct[T](x, w: openArray[T]): seq[T] =
-  if x.len != w.len:
-    raise 
-  var y: seq[T] = @[]
-  for i in 0..<w.len:
-    y.add(x[i] * w[i])
+proc arrayProduct[N, T](a1, a2: array[N, T]): array[N, T] =
+  var y: array[N, T]
+  echo "low: ", low(N), ", high: ", high(N)
+  for i in low(N)..high(N):
+    y[i] = a1[i] * a2[i]
   return y
+
+proc vectorProduct[N, T](x1, x2: array[N, T]): T =
+  return sum(arrayProduct(x1, x2))
 
 proc perceptronAnd(x1, x2: int): int =
   let
     x: array[2, float] = [float(x1), float(x2)]
     w: array[2, float] = [0.5, 0.5]
     b: float = -0.7
-  let y = sum(vectorProduct(x, w)) + b
+  let y = vectorProduct(x, w) + b
   if y <= 0:
     return 0
   else:
@@ -42,7 +44,7 @@ proc perceptronNand(x1, x2: int): int =
     x: array[2, float] = [float(x1), float(x2)]
     w: array[2, float] = [-0.5, -0.5]
     b: float = 0.7
-  let y = sum(vectorProduct(x, w)) + b
+  let y = vectorProduct(x, w) + b
   if y <= 0:
     return 0
   else:
@@ -53,7 +55,7 @@ proc perceptronOr(x1, x2: int): int =
     x: array[2, float] = [float(x1), float(x2)]
     w: array[2, float] = [0.5, 0.5]
     b: float = -0.2
-  let y = sum(vectorProduct(x, w)) + b
+  let y = vectorProduct(x, w) + b
   if y <= 0:
     return 0
   else:
