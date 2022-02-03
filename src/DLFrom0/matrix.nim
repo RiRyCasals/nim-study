@@ -1,10 +1,10 @@
 import lenientops
-import activateFunction
+import math
 
 
 # 3.3.1 多次元配列
 type
-  Matrix2d[m, n: static[int], T] =
+  Matrix2d*[m, n: static[int], T] =
     array[m, array[n, T]]
 
 # 3.3.2 行列積
@@ -31,6 +31,20 @@ proc add[M, N, T](matrixA, matrixB: Matrix2d[M, N, T]): Matrix2d[M, N, T] =
     for n in 0..<N:
       matrixC[m][n] = matrixA[m][n] + matrixB[m][n]
   return matrixC
+
+proc sigmoid[M, N, T](matrix: Matrix2d[M, N, T]): Matrix2d[M, N, T] =
+  var matrixB: Matrix2d[M, N, T]
+  for m in 0..<M:
+    for n in 0..<N:
+      matrixB[m][n] = pow(1 + exp(T(-matrix[m][n])), -1)
+  return matrixB
+
+proc relu[M, N, T](matrix: Matrix2d[M, N, T]): Matrix2d[M, N, T] =
+  var matrixB: Matrix2d[M, N, T]
+  for m in 0..<M:
+    for n in 0..<N:
+      matrixB[m][n] = max(T(0), T(matrix[m][n]))
+  return matrixB
 
 # 転置行列：実装してみたかったからやった
 #[
@@ -59,7 +73,7 @@ when isMainModule:
   echo matrixX.dot(matrixW)
   ]#
 
-  # 3.4.2 角層における信号伝達の実装
+  # 3.4.2 各層における信号伝達の実装
   const
     i: int = 1
     j: int = 2
@@ -81,4 +95,4 @@ when isMainModule:
   echo matrixB.shape
   echo matrixX.dot(matrixW)
   echo matrixX.dot(matrixW).add(matrixB)
-  echo matrixX.dot(matrixW).add(matrixB)[0].sigmoid()
+  echo matrixX.dot(matrixW).add(matrixB).sigmoid()
