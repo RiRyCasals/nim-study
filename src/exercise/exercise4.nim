@@ -27,7 +27,7 @@ echo "==== Q3 ===="
 
 proc pointAdd(points: tuple[x, y: float]): tuple =
   let newTuple = (x: points.x + points.y, y: points.x + points.y)
-  return newTuple 
+  return newTuple
 
 var points = (x: 1.25, y: 2.15)
 echo points.pointAdd()
