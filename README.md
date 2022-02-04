@@ -20,6 +20,7 @@ Nimの配列では`let a: array[1..10, int]`のように利用できるインデ
 二次元配列を利用するために `static[int]` を利用することがあった．（ジェネリクスを参照）
 この場合，size が 0..size ではなく，size で保持されていた．
 コンパイル言語の仕様（Nim固有かもしれないが）に慣れていないので，ドキュメントを読み返したりする必要がある．
+-> (定数式に変換する)[https://nim-lang.org/docs/manual.html#special-types-static-t]．
 
 
 ### ジェネリクス
