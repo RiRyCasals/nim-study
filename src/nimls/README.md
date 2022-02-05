@@ -1,32 +1,39 @@
 # nimls
+
 lsコマンドをNimで実装してみる．
 
+
 ## ロジック
-1.パスを取得 : cmdArgument
 
-2.パスが存在するか確認 : os.fileExists("path"), os.dirExists("path")
+1.パスを取得 : `cmdArgument`
 
-  a.しない : quit(QuitFailure)
+2.パスが存在するか確認 : `fileExists("path")`, `dirExists("path")`
 
-  b.する : next
+	a.しない :
+		
+		`quit(QuitFailure)`
 
-3.オプションが有るか確認 : cmdShortOption, cmdLongOption
+	b.する :
+	
+		`continue`
 
-  a.ない :
+3.オプションが有るか確認 : `cmdShortOption`, `cmdLongOption`
 
-    隠しを除くファイル，ディレクトリを取得 : `walkDir(path)`, `string.startWith("/.")`, `string.contains("/.")`
+	a.ない :
+		
+		隠しを除くファイル，ディレクトリを取得 : `walkDir(path)`, `string.startWith("/.")`, `string.contains("/.")`
 
-  b.ある :
-
-    `-a, --all` : 隠しを含むファイル，ディレクトリを取得 : `walkDir(path)`
-
-    `-d, --dir` : ディレクトリを取得
-
-    `-f, --file` : ファイルを取得
-
-    `-r, --recurse` : ファイル，ディレクトリを再帰的に取得 : `walkDirRec(path)` -> `walkDir(path)`の再帰
-
-    `-?, --help` : nimlsのドキュメント表示
+	b.ある :
+		
+		`-a, --all` : 隠しを含むファイル，ディレクトリを取得 : `walkDir(path)`
+		
+		`-d, --dir` : ディレクトリを取得
+		
+		`-f, --file` : ファイルを取得
+		
+		`-r, --recurse` : ファイル，ディレクトリを再帰的に取得 : `walkDirRec(path)` -> `walkDir(path)`の再帰
+		
+		`-?, --help` : nimlsのドキュメント表示
 
 4.取得したファイル，ディレクトリを表示
 
@@ -35,3 +42,8 @@ lsコマンドをNimで実装してみる．
 フィルタイング語のパスリストを表示している．
 
 lsコマンドと同等以上の速さにするならこのロジックは崩したほうがいい．
+
+
+## 余談
+
+Markdownってこんなに書きにくかったかな？
