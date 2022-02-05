@@ -3,6 +3,30 @@ import strutils
 import parseopt
 
 
+proc nimlsDocument(): string =
+  return """
+  What is nimls :
+      nimls implementation of the ls command in the Nim programming language.
+      You can get files and directories name.
+
+  Useage :
+      nimls [option] [path]
+  
+  Default command:
+      nimls ./
+
+  Meta options :
+      -?, --help      Show nimls document.
+
+  Display options :
+      -r, --recurse   Recursively get files and directories name.
+
+  Filtering options :
+      -a, --all       Get hidden files and directories name.
+      -d, --dir       Get directories name.
+      -f, --file      Get files name.
+  """
+
 proc getArguments(): tuple =
   var arguments = (path: "./", isAll: false, isRecurse: false, isFileOnly: false, isDirectoryOnly: false)
   var option = initOptParser(commandLineParams().join(" "))
@@ -23,6 +47,8 @@ proc getArguments(): tuple =
             arguments.isFileOnly = true
           of "recurse", "r":
             arguments.isRecurse = true
+          of "help", "?":
+            quit(nimlsDocument(), QuitSuccess)
           else:
             quit("nimls: Unknown option '" & $key & "'", QuitFailure)
       else:
@@ -33,7 +59,7 @@ proc getPaths(targetPath: string, isRecurse: bool): seq[tuple[kind: PathComponen
   var pathList: seq[tuple[kind: PathComponent, path: string]] = @[]
   for kindAndPath in walkDir(targetPath):
     pathList.add(kindAndPath)
-    # 再起する場合
+    # 再帰する場合 : walkDirRec(path)はkindを返さない（ファイルのパスだけになる）のでwalkDir(path)で再帰する
     if isRecurse and (kindAndPath.kind == pcDir):
       pathList &= getPaths(kindAndPath.path, isRecurse)
   return pathList
@@ -82,21 +108,5 @@ proc nimlsCommand(arguments: tuple): bool =
 
 
 when isMainModule:
-  #[
-    1.パスを取得
-    2.パスが存在するか確認 : os.fileExists("path"), os.dirExists("path")
-      a.しない : exit
-      b.する : pass
-    3.オプションが有るか確認 : cmdArgument, cmdShortOption, cmdLongOption
-      a.ない :
-        隠しを除くファイル，ディレクトリを取得 : walkDir(path), string.startWith("/."), string.contains("/.")
-      b.ある :
-        -a, --all : 隠しを含むファイル，ディレクトリを取得（. .. を除く） : walkDir(path)
-        -d, --dir : ディレクトリを取得
-        -f, --file : ファイルを取得
-        -r, --recurse: ファイル，ディレクトリを再帰的に取得 : walkDirRec(path)
-    4.取得したファイル，ディレクトリを表示
-  ]#
-
   let nimlsArguments = getArguments()
   discard nimlsCommand(nimlsArguments)
