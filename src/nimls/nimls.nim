@@ -25,7 +25,7 @@ proc getArguments(): tuple =
             arguments.isRecurse = true
           else:
             quit("nimls: Unknown option '" & $key & "'", QuitFailure)
-      of cmdEnd:
+      else:
         discard
   return arguments
 
@@ -38,18 +38,48 @@ proc getPaths(targetPath: string, isRecurse: bool): seq[tuple[kind: PathComponen
       pathList &= getPaths(kindAndPath.path, isRecurse)
   return pathList
 
-proc ls(arguments: tuple): bool =
-  #隠しを含むファイル，ディレクトリを取得
-  var pathList = getPaths(arguments.path, arguments.isRecurse)
-  echo pathList
-  #隠しを除く
-  #if not arguments.isAll:
-  #ファイルのみ
-  #if arguments.isFileOnly:
-    #ディレクトリを除外
-  #ディレクトリのみ
-  #if arguments.isDirectoryOnly:
-    #ファイルを除外
+proc excludeHiddenFileOrDirectory(pathList: seq[tuple[kind: PathComponent, path: string]]): seq[tuple[kind: PathComponent, path: string]] =
+  var excludedPathList: seq[tuple[kind: PathComponent, path: string]] = @[]
+  for kindAndPath in pathList:
+    if kindAndPath.path.contains("/."):
+        continue
+    else:
+      excludedPathList.add(kindAndPath)
+  return excludedPathList
+   
+proc exclude(pathList: seq[tuple[kind: PathComponent, path: string]], kind: PathComponent): seq[tuple[kind: PathComponent, path: string]] =
+  var excludedPathList: seq[tuple[kind: PathComponent, path: string]] = @[]
+  for kindAndPath in pathList:
+    if kindAndPath.kind == kind:
+        continue
+    else:
+      excludedPathList.add(kindAndPath)
+  return excludedPathList
+ 
+proc getPathList(arguments: tuple): seq[tuple[kind: PathComponent, path: string]] =
+  var pathList: seq[tuple[kind: PathComponent, path: string]] = getPaths(arguments.path, arguments.isRecurse)
+  if not arguments.isAll:
+    pathList = excludeHiddenFileOrDirectory(pathList)
+  if arguments.isFileOnly:
+    pathList = pathList.exclude(pcDir)
+  if arguments.isDirectoryOnly:
+    pathList = pathList.exclude(pcFile)
+  return pathList
+
+proc nimlsCommand(arguments: tuple): bool =
+  let pathList = getPathList(arguments)
+  for kindAndPath in pathList:
+    if kindAndPath.kind == pcDir:
+      if kindAndPath.path.startsWith("./"):
+        echo "d : ", kindAndPath.path[2..kindAndPath.path.len-1]
+      else:
+        echo "d : ", kindAndPath.path
+    elif kindAndPath.kind == pcFile:
+      if kindAndPath.path.startsWith("./"):
+        echo "f : ", kindAndPath.path[2..kindAndPath.path.len-1]
+      else:
+        echo "f : ", kindAndPath.path
+
 
 when isMainModule:
   #[
@@ -69,8 +99,4 @@ when isMainModule:
   ]#
 
   let nimlsArguments = getArguments()
-  echo nimlsArguments.type
-  echo nimlsArguments
-  discard ls(nimlsArguments)
-  for t in getPaths("./", true):
-    echo t
+  discard nimlsCommand(nimlsArguments)
