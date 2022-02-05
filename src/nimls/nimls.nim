@@ -27,36 +27,9 @@ proc nimlsDocument(): string =
       -f, --file      Get files name.
   """
 
-proc getArguments(): tuple =
-  var arguments = (path: "./", isAll: false, isRecurse: false, isFileOnly: false, isDirectoryOnly: false)
-  var option = initOptParser(commandLineParams().join(" "))
-  for kind, key, val in option.getopt():
-    case kind:
-      of cmdArgument:
-        if fileExists(key) or dirExists(key):
-          arguments.path = key
-        else:
-            quit("nimls: '" & $key & "' file or directly is not found", QuitFailure)
-      of cmdLongOption, cmdShortOption:
-        case key:
-          of "all", "a":
-            arguments.isAll = true
-          of "dir", "d":
-            arguments.isDirectoryOnly = true
-          of "file", "f":
-            arguments.isFileOnly = true
-          of "recurse", "r":
-            arguments.isRecurse = true
-          of "help", "?":
-            quit(nimlsDocument(), QuitSuccess)
-          else:
-            quit("nimls: Unknown option '" & $key & "'", QuitFailure)
-      else:
-        discard
-  return arguments
 
 proc getPaths(targetPath: string, isRecurse: bool): seq[tuple[kind: PathComponent, path: string]] =
-  var pathList: seq[tuple[kind: PathComponent, path: string]] = @[]
+  let pathList: seq[tuple[kind: PathComponent, path: string]] = @[]
   for kindAndPath in walkDir(targetPath):
     pathList.add(kindAndPath)
     # 再帰する場合 : walkDirRec(path)はkindを返さない（ファイルのパスだけになる）のでwalkDir(path)で再帰する
@@ -93,7 +66,7 @@ proc getPathList(arguments: tuple): seq[tuple[kind: PathComponent, path: string]
   return pathList
 
 proc nimlsCommand(arguments: tuple): bool =
-  let pathList = getPathList(arguments)
+  var pathList: seq[tuple[kind: PathComponent, path: string]] = getPathList(arguments)
   for kindAndPath in pathList:
     if kindAndPath.kind == pcDir:
       if kindAndPath.path.startsWith("./"):
@@ -105,6 +78,34 @@ proc nimlsCommand(arguments: tuple): bool =
         echo "f : ", kindAndPath.path[2..kindAndPath.path.len-1]
       else:
         echo "f : ", kindAndPath.path
+
+proc getArguments(): tuple =
+  var arguments = (path: "./", isAll: false, isRecurse: false, isFileOnly: false, isDirectoryOnly: false)
+  var option = initOptParser(commandLineParams().join(" "))
+  for kind, key, val in option.getopt():
+    case kind:
+      of cmdArgument:
+        if fileExists(key) or dirExists(key):
+          arguments.path = key
+        else:
+            quit("nimls: '" & $key & "' file or directly is not found", QuitFailure)
+      of cmdLongOption, cmdShortOption:
+        case key:
+          of "all", "a":
+            arguments.isAll = true
+          of "dir", "d":
+            arguments.isDirectoryOnly = true
+          of "file", "f":
+            arguments.isFileOnly = true
+          of "recurse", "r":
+            arguments.isRecurse = true
+          of "help", "?":
+            quit(nimlsDocument(), QuitSuccess)
+          else:
+            quit("nimls: Unknown option '" & $key & "'", QuitFailure)
+      else:
+        discard
+  return arguments
 
 
 when isMainModule:
