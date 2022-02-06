@@ -25,15 +25,17 @@ lsコマンドをNimで実装してみる．
 
 	b.ある :
 		
+		`-?, --help` : nimlsのドキュメント表示
+
 		`-a, --all` : 隠しを含むファイル，ディレクトリを取得 : `walkDir(path)`
 		
-		`-d, --dir` : ディレクトリを取得
+		`-d, --dir` : ディレクトリを取得 : pcDir
 		
-		`-f, --file` : ファイルを取得
+		`-f, --file` : ファイルを取得 : pcFile
 		
 		`-r, --recurse` : ファイル，ディレクトリを再帰的に取得 : `walkDirRec(path)` -> `walkDir(path)`の再帰
+
 		
-		`-?, --help` : nimlsのドキュメント表示
 
 4.取得したファイル，ディレクトリを表示
 
@@ -44,6 +46,21 @@ lsコマンドをNimで実装してみる．
 ~~lsコマンドと同等以上の速さにするならこのロジックは崩したほうがいい．~~
 
 -> リリースビルドを行うことにより，同等以上の速度を計測できた．
+
+-> 今後オプションを増やすなら，ロジックの変更をしたほうがいい予感．
+
+
+## 今後のToDo
+
+- [ ] `-p, --permission` : ファイル，ディレクトリのパーミッションの取得 -> getFilePermission(filename)
+
+- [ ] `-t, --time` : ファイル，ディレクトリの日時関連の取得 -> getCreationTime(path), getLastAccessTime(path), getLastModificationTime(path)
+
+- [ ] `-s, --size` : ファイルサイズの取得 -> getFileSize(path)
+
+- [ ] `-i, --info` : ファイル，ディレクトリの詳細情報の取得 -> getFileInfo(path), FileInfo object
+
+- [ ] `-l, --link` : リンクファイル，リンクディレクトリの取得 -> pcLinkToFile, pcLinkToDir
 
 
 ## 余談
