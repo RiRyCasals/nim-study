@@ -1,0 +1,48 @@
+when isMainModule:
+  let value: int = 20
+
+  case value:
+    of 0:
+      echo $value
+    of 1:
+      echo $value
+    of 2:
+      echo $value
+    of 3:
+      echo $value
+    of 4:
+      echo $value
+    of 5:
+      echo $value
+    of 6:
+      echo $value
+    of 7:
+      echo $value
+    of 8:
+      echo $value
+    of 9:
+      echo $value
+    of 10:
+      echo $value
+    of 11:
+      echo $value
+    of 12:
+      echo $value
+    of 13:
+      echo $value
+    of 14:
+      echo $value
+    of 15:
+      echo $value
+    of 16:
+      echo $value
+    of 17:
+      echo $value
+    of 18:
+      echo $value
+    of 19:
+      echo $value
+    of 20:
+      echo $value
+    else:
+      echo $value
