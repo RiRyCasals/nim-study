@@ -1,2 +1,2 @@
 src/nimdays
-src/exercise/leibnizFormula*
+src/exercise/test/leibnizFormula.nim
