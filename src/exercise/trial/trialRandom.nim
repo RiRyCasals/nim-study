@@ -60,3 +60,8 @@ init.shuffle(myArray2)
 echo myArray2
 shuffle(myArray2)
 echo myArray2
+
+## ガウス分布に基づく乱数
+echo "======= gauss ======="
+echo gauss(1.0, 1.0)
+echo init.gauss(1.0, 1.0)
