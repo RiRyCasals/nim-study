@@ -12,7 +12,7 @@ else:
 
 
 echo "======= jpg file ======="
-filePath = "trial/nimPython.jpg"
+filePath = "trial/sample.jpeg"
 
 if fileExists(filePath):
   let file = readFile(filePath)
@@ -24,14 +24,21 @@ else:
 
 
 echo "======= jpg file 2 ======="
+
+#[ 画像を配列として読み込む手順（予定）
+  1. ヘッダ情報を読む（SOI~SOSまで）
+  2. 画像を読む（SOS以降）
+]#
+
 #proc loadImage(path: string): openArray[int] =
 proc loadImage(path: string) =
   let file: File = open(path, fmRead)
   echo file.type
   echo file.getFileSize
   echo file.getFilePos
-  setFilePos(file, 10)
-  echo file.getFilePos
+  var buffer: array[2, uint8]
+  echo file.readBytes(buffer, 0, 2)
+  echo buffer
   file.close()
 
 if fileExists(filePath):
