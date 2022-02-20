@@ -32,14 +32,16 @@ echo "======= jpg file 2 ======="
 
 #proc loadImage(path: string): openArray[int] =
 proc loadImage(path: string) =
-  let file: File = open(path, fmRead)
-  echo file.type
-  echo file.getFileSize
-  echo file.getFilePos
-  var buffer: array[2, uint8]
-  echo file.readBytes(buffer, 0, 2)
-  echo buffer
-  file.close()
+  block:
+    let file: File = open(path, fmRead)
+    defer:
+      file.close()
+    echo file.type
+    echo file.getFileSize
+    echo file.getFilePos
+    var SOI: array[2, uint8]
+    echo file.readBytes(SOI, 0, 2)
+    echo SOI
 
 if fileExists(filePath):
   loadImage(filePath)
