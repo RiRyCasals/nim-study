@@ -118,22 +118,46 @@ echo "======= jpg file 2 ======="
     b. 続く1バイトが D9 であることを確認
 ]#
 
+proc identification(buffer: uint8) =
+  if buffer == 0xFF:
+    echo "マーカー識別子"
+  elif buffer == 0xD8:
+    echo "SOI"
+  elif 0xE0 <= buffer and buffer <= 0xEF:
+    echo "APPn"
+  elif buffer == 0xDB:
+    echo "DQT"
+  elif buffer == 0xC0:
+    echo "SOF"
+  elif buffer == 0xC4:
+    echo "DHT"
+  elif buffer == 0xDA:
+    echo "SOS"
+  elif buffer == 0xD9:
+    echo "EOI"
+  elif buffer == 0x00:
+    echo "ただのデータ"
+  else:
+    echo  "マーカー識別子ではない"
+
 #proc loadImage(path: string): openArray[int] =
 proc loadImage(path: string) =
   block:
     let file: File = open(path, fmRead)
+
     defer:
       file.close()
+
     echo file.type
     echo file.getFileSize
-    echo file.getFilePos
-    var SOI: array[2, uint8]
-    echo file.readBytes(SOI, 0, 2)
-    echo SOI
-    if SOI[0] == 0xFF:
-      echo "マーカー識別子"
-      if SOI[1] == 0xD8:
-        echo "SOIマーカー"
+
+    var
+      buffer: uint8
+      bufferPointer: pointer = buffer.addr
+
+    for i in 0..4:
+      discard file.readBuffer(bufferPointer, 1) #先頭から順にpopしてく感じ（readByte,readCharなども同じ挙動）
+      buffer.identification
 
 if fileExists(filePath):
   loadImage(filePath)
