@@ -148,15 +148,13 @@ proc loadImage(path: string) =
     defer:
       file.close()
 
-    echo file.type
     echo file.getFileSize
 
-    var
-      buffer: uint8
-      bufferPointer: pointer = buffer.addr
+    var buffer: uint8
 
     for i in 0..4:
-      discard file.readBuffer(bufferPointer, 1) #先頭から順にpopしてく感じ（readByte,readCharなども同じ挙動）
+      discard file.readBuffer(buffer.addr, 1) #先頭から順にpopしてく感じ（readByte,readCharなども同じ挙動）
+      # 一つ前が0xFFであるかとか知れるようにしたい
       buffer.identification
 
 if fileExists(filePath):
