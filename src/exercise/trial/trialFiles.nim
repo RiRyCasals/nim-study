@@ -42,6 +42,10 @@ proc loadImage(path: string) =
     var SOI: array[2, uint8]
     echo file.readBytes(SOI, 0, 2)
     echo SOI
+    if SOI[0] == 0xFF:
+      echo "マーカー識別子"
+      if SOI[1] == 0xD8:
+        echo "SOIマーカー"
 
 if fileExists(filePath):
   loadImage(filePath)
