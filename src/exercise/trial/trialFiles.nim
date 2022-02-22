@@ -153,7 +153,7 @@ proc loadImage(path: string) =
     var buffer: uint8
 
     for i in 0..4:
-      discard file.readBuffer(buffer.addr, 1) #先頭から順にpopしてく感じ（readByte,readCharなども同じ挙動）
+      discard file.readBuffer(buffer.addr, 1) #queueみたいな感じ（readByte,readCharなども同じ挙動）
       # 一つ前が0xFFであるかとか知れるようにしたい
       buffer.identification
 
