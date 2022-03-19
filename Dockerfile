@@ -1,2 +1,4 @@
-FROM --platform=arm64 nimlang/nim:latest
+FROM nimlang/nim:latest
+RUN apt update && apt upgrade -y
 WORKDIR /work
+CMD ["bash"]
