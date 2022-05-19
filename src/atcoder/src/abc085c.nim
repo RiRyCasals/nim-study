@@ -7,8 +7,8 @@ var n, y: int
 y = y.div(1000)
 
 iterator combinations(n: int): array[3, int] =
-  for i in countUp(0, n):
-    for j in countUp(0, n):
+  for i in 0..n:
+    for j in 0..n:
       let k = n - i - j
       if k < 0:
         continue
