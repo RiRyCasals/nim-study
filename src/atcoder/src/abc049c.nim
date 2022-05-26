@@ -2,11 +2,11 @@ import strutils
 
 let s = stdin.readLine
 
-var dreamN = s.count("dream");
-var dreamerN = s.count("dreamer");
-var eraseN = s.count("erase");
-var eraserN = s.count("eraser");
-var dreameraseN = s.count("dreamerase");
+var dreamN = s.count("dream")
+var dreamerN = s.count("dreamer")
+var eraseN = s.count("erase")
+var eraserN = s.count("eraser")
+var dreameraseN = s.count("dreamerase")
 
 dreamN -= dreamerN
 eraseN -= eraserN
