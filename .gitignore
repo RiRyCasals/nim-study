@@ -1,2 +1,10 @@
 src/nimdays
 src/exercise/test/leibnizFormula.nim
+
+
+src/atcoder/math-and-algorithm/src/p007.nim
+src/atcoder/math-and-algorithm/bin/p007
+src/atcoder/math-and-algorithm/src/p012.nim
+src/atcoder/math-and-algorithm/bin/p012
+src/atcoder/math-and-algorithm/src/p014.nim
+src/atcoder/math-and-algorithm/bin/p014
